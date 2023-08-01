@@ -26,11 +26,7 @@ class ProductViewSet(viewsets.ModelViewSet):
             return ProductDetailSerializer
         return self.serializer_class
     
-    def list(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset())
-        serializer = self.get_serializer(queryset, many=True)
-        data = serializer.data
-        return Response({'data': data})
+
 
 
 class CreateUserView(generics.CreateAPIView):

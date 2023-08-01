@@ -7,6 +7,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# cloudinary import
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -16,6 +21,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = int(os.environ.get("DEBUG", default=0))
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 print(f'Secret key is: {SECRET_KEY}')
+
+
 
 # Application definition
 
@@ -29,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'jazzyburger',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -66,13 +74,20 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
+# render PostgresSQL db (live)
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.parse(os.environ.get("POSTGRES_DB_URL"))
+}
+# print(DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -131,4 +146,13 @@ REST_FRAMEWORK = {
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
+    'http://localhost:3000',
 ]
+
+# cloudinary-django integration
+
+cloudinary.config(
+    cloud_name = "djkrhjgjd",
+    api_key = "477929379393247",
+    api_secret = "Jt8R6TuzvNUpYXMeaRINWhh_Ki4",
+)
